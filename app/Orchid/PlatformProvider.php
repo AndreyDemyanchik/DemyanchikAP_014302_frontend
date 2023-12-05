@@ -39,40 +39,29 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.chooseCategoriesAndParamsForHandling')
                 ->permission('platform.chooseCategoriesAndParamsForHandling'),
 
-            Menu::make('Запуск обработки стат. данных')
-                ->icon('control-play')
-                ->route('platform.chooseStatDataForVisualization')
-                ->permission('platform.chooseStatDataForVisualization'),
-
-            Menu::make('Выбор стат. данных для визуализации')
+            /*Menu::make('Выбор стат. данных для визуализации')
                 ->icon('folder-alt')
                 ->route('platform.chooseStatVisualization')
-                ->permission('platform.chooseStatVisualization'),
+                ->permission('platform.chooseStatVisualization'),*/
 
             Menu::make('Запуск визуализации')
                 ->icon('control-forward')
                 ->route('platform.startHandlingStatData')
                 ->permission('platform.startHandlingStatData'),
 
-            Menu::make('Скачать изображение визуализации')
+            /*Menu::make('Скачать изображение визуализации')
                 ->icon('cloud-download')
                 ->route('platform.formImgVisualization')
-                ->permission('platform.formImgVisualization'),
-
-            Menu::make('Выбор данных для отчёта')
-                ->icon('bs.book')
-                ->route('platform.makeReport')
-                ->permission('platform.makeReport'),
+                ->permission('platform.formImgVisualization'),*/
 
             Menu::make('Генерация отчёта')
                 ->icon('browser')
                 ->route('platform.generateReport')
                 ->permission('platform.generateReport'),
 
-            Menu::make('Скачать отчёт в PDF')
-                ->icon('docs')
-                ->route('platform.downloadPdfReport')
-                ->permission('platform.downloadPdfReport'),
+            /*Menu::make('Chart tools')
+                ->icon('bar-chart')
+                ->route('platform.example.charts'),*/
 
             Menu::make(__('Пользователи'))
                 ->icon('user')
@@ -103,13 +92,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.users', __('Users')),
             ItemPermission::group(__('Менеджер'))
                 ->addPermission('platform.chooseCategoriesAndParamsForHandling', __('Выбор категорий и параметров'))
-                ->addPermission('platform.chooseStatDataForVisualization', __('Запуск обработки стат. данных'))
                 ->addPermission('platform.chooseStatVisualization', __('Выбор стат. данных для визуализации'))
                 ->addPermission('platform.startHandlingStatData', __('Запуск визуализации'))
                 ->addPermission('platform.formImgVisualization', __('Скачать изображение визуализации'))
-                ->addPermission('platform.makeReport', __('Выбор данных для отчёта'))
                 ->addPermission('platform.generateReport', __('Генерация отчёта'))
-                ->addPermission('platform.downloadPdfReport', __('Скачать отчёт в PDF'))
         ];
     }
 }

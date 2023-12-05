@@ -2,7 +2,11 @@
 
 namespace App\Orchid\Screens;
 
+use Illuminate\Support\Facades\Auth;
+use Orchid\Platform\Models\User;
 use Orchid\Screen\Screen;
+use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 
 class FormImgVisualizationScreen extends Screen
 {
@@ -10,6 +14,7 @@ class FormImgVisualizationScreen extends Screen
      * Fetch data to be displayed on the screen.
      *
      * @return array
+     * @throws CouldNotTakeBrowsershot
      */
     public function query(): iterable
     {
