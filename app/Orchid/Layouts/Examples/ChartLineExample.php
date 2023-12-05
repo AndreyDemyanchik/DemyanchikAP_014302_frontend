@@ -15,6 +15,8 @@ class ChartLineExample extends Chart
      */
     protected $height = 300;
 
+    protected $export = true;
+
     /**
      * Configuring line.
      *

@@ -17,6 +17,8 @@ class ChartBarExample extends Chart
      */
     protected $type = self::TYPE_BAR;
 
+    protected $export = true;
+
     /**
      * Height of the chart.
      *

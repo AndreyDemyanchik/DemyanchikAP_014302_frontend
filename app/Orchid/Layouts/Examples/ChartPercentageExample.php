@@ -17,6 +17,8 @@ class ChartPercentageExample extends Chart
      */
     protected $type = self::TYPE_PERCENTAGE;
 
+    protected $export = true;
+
     /**
      * @var int
      */

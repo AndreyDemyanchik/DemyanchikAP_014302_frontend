@@ -17,6 +17,8 @@ class ChartPieExample extends Chart
      */
     protected $type = self::TYPE_PIE;
 
+    protected $export = true;
+
     /**
      * @var int
      */
