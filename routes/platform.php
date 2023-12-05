@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\ChooseClientsParamsScreen;
+use App\Orchid\Screens\ChooseMalfunctionsParamsScreen;
+use App\Orchid\Screens\ChooseRidesParamsScreen;
+use App\Orchid\Screens\ChooseScootersParamsScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -17,16 +21,12 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 use App\Orchid\Screens\ChooseCategoriesAndParamsForHandlingScreen;
-use App\Orchid\Screens\ChooseStatDataForVisualizationScreen;
 use App\Orchid\Screens\ChooseStatVisualizationScreen;
-use App\Orchid\Screens\DownloadPdfReportScreen;
 use App\Orchid\Screens\FormImgVisualizationScreen;
 use App\Orchid\Screens\GenerateReportScreen;
-use App\Orchid\Screens\MakeReportScreen;
 use App\Orchid\Screens\StartHandlingStatDataScreen;
 
 /*
@@ -116,17 +116,20 @@ Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.exam
 // Routes of App
 Route::screen('handling/categories/params/choose', ChooseCategoriesAndParamsForHandlingScreen::class)
     ->name('platform.chooseCategoriesAndParamsForHandling');
-Route::screen('statData/visualization/choose', ChooseStatDataForVisualizationScreen::class)
-    ->name('platform.chooseStatDataForVisualization');
 Route::screen('statData/visualization', ChooseStatVisualizationScreen::class)
     ->name('platform.chooseStatVisualization');
 Route::screen('statData/visualization/start', StartHandlingStatDataScreen::class)
     ->name('platform.startHandlingStatData');
 Route::screen('statData/visualization/img', FormImgVisualizationScreen::class)
     ->name('platform.formImgVisualization');
-Route::screen('report/make', MakeReportScreen::class)
-    ->name('platform.makeReport');
 Route::screen('report/generate', GenerateReportScreen::class)
     ->name('platform.generateReport');
-Route::screen('report/download', DownloadPdfReportScreen::class)
-    ->name('platform.downloadPdfReport');
+Route::screen('category/clients', ChooseClientsParamsScreen::class)
+    ->name('platform.categoryClients');
+Route::screen('category/scooters', ChooseScootersParamsScreen::class)
+    ->name('platform.categoryScooters');
+Route::screen('category/malfunctions', ChooseMalfunctionsParamsScreen::class)
+    ->name('platform.categoryMalfunctions');
+Route::screen('category/rides', ChooseRidesParamsScreen::class)
+    ->name('platform.categoryRides');
+// ->middleware('allowUnauthenticated')
