@@ -3,7 +3,16 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Client;
+use App\Models\Malfunction;
+use App\Models\Ride;
+use App\Models\RideRouteData;
+use App\Models\Scooter;
+use App\Models\ScooterMalfunction;
+use Database\Factories\MalfunctionFactory;
+use Database\Factories\RideRouteDataFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +21,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Client::factory(40)->create();
+        Scooter::factory(40)->create();
+        Ride::factory(40)->create();
+        Malfunction::factory(40)->create();
+        RideRouteData::factory(40)->create();
+        ScooterMalfunction::factory(40)->create();
     }
 }
