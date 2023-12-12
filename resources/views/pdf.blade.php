@@ -23,7 +23,7 @@
                     @endforeach
                 </ul>
             @else
-                <h4>{{ $datum }}</h4>
+                <h5>{{ $datum }}</h5>
             @endif
         @endforeach
 
