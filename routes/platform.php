@@ -111,15 +111,11 @@ Route::screen('/examples/grid', ExampleGridScreen::class)->name('platform.exampl
 Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.example.charts');
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 
-//Route::screen('idea', Idea::class, 'platform.screens.idea');
-
 // Routes of App
 Route::screen('handling/categories/params/choose', ChooseCategoriesAndParamsForHandlingScreen::class)
     ->name('platform.chooseCategoriesAndParamsForHandling');
 Route::screen('statData/visualization', ChooseStatVisualizationScreen::class)
     ->name('platform.chooseStatVisualization');
-Route::screen('statData/visualization/start', StartHandlingStatDataScreen::class)
-    ->name('platform.startHandlingStatData');
 Route::screen('statData/visualization/img', FormImgVisualizationScreen::class)
     ->name('platform.formImgVisualization');
 Route::screen('report/generate', GenerateReportScreen::class)
@@ -132,4 +128,3 @@ Route::screen('category/malfunctions', ChooseMalfunctionsParamsScreen::class)
     ->name('platform.categoryMalfunctions');
 Route::screen('category/rides', ChooseRidesParamsScreen::class)
     ->name('platform.categoryRides');
-// ->middleware('allowUnauthenticated')
