@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VisualizationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/admin');
+Route::get('statData/visualization/start', [
+    'as' => 'platform.startHandlingStatData',
+    'uses' => 'App\Orchid\Screens\StartHandlingStatDataScreen@__invoke',
+    'controller' => 'App\Orchid\Screens\StartHandlingStatDataScreen',
+    'prefix' => '/admin/'
+])->name('platform.startHandlingStatData');
