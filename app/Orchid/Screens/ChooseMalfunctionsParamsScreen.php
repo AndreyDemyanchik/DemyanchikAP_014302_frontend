@@ -64,6 +64,14 @@ class ChooseMalfunctionsParamsScreen extends Screen
                         ->title('Ранжирование по серьёзности поломок')
                         ->sendTrueOrFalse(),
 
+                    CheckBox::make('avgRepairingTimeByMakers')
+                        ->title('Среднее время починки по производителям')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('malfunctionsChanging')
+                        ->title('Динамика неисправностей по времени')
+                        ->sendTrueOrFalse(),
+
                     Button::make('Сохранить')
                         ->method('submit')
                         ->type(Color::DEFAULT()),

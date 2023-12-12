@@ -65,6 +65,14 @@ class ChooseClientsParamsScreen extends Screen
                         ->title('Прирост/убыток количества пользователей с подпиской')
                         ->sendTrueOrFalse(),
 
+                    CheckBox::make('clientsDynamicsByMonth')
+                        ->title('Динамика клиентов по месяцам')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('strongClientsDynamicsByMonth')
+                        ->title('Динамика поездок постоянных клиентов по месяцам')
+                        ->sendTrueOrFalse(),
+
                     Button::make('Сохранить')
                         ->method('submit')
                         ->type(Color::DEFAULT()),

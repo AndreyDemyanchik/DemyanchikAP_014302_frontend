@@ -64,6 +64,26 @@ class ChooseScootersParamsScreen extends Screen
                         ->title('Ранжирование по скорости')
                         ->sendTrueOrFalse(),
 
+                    CheckBox::make('speedIncreasing')
+                        ->title('Данные по скорости разгона в единицу времени')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('absoluteChangingScootersQuantityByTime')
+                        ->title('Динамика изменения единиц транспорта за всё время по месяцам')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('detectReliability')
+                        ->title('Самокаты с наибольшим числом поломок за всё время')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('rangeByCost')
+                        ->title('Самые дорогие самокаты (сумма цен разблокировки и тарифа)')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('rangeByMoneyIncome')
+                        ->title('Самые прибыльные самокаты по заработанным суммам')
+                        ->sendTrueOrFalse(),
+
                     Button::make('Сохранить')
                         ->method('submit')
                         ->type(Color::DEFAULT()),

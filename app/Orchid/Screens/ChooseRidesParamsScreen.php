@@ -64,6 +64,14 @@ class ChooseRidesParamsScreen extends Screen
                         ->title('Средняя дистанция поездок')
                         ->sendTrueOrFalse(),
 
+                    CheckBox::make('distanceDynamicByTime')
+                        ->title('Дистанция поездок относительно времени')
+                        ->sendTrueOrFalse(),
+
+                    CheckBox::make('avgSpeedDynamicByTime')
+                        ->title('Средняя скорость поездок относительно времени')
+                        ->sendTrueOrFalse(),
+
                     Button::make('Сохранить')
                         ->method('submit')
                         ->type(Color::DEFAULT()),

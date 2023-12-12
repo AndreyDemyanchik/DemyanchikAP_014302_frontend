@@ -79,7 +79,7 @@ class StartHandlingStatDataScreen extends Screen
     public function makeChartsLayout(array $visualizationData): void
     {
         $i = 0;
-        foreach ($visualizationData as $paramName => $visualizationDatum) {
+        foreach ($visualizationData as $visualizationDatum) {
             if ($visualizationDatum['chartType'] !== 'text') {
                 $className = ucfirst($visualizationDatum['chartType']);
 
