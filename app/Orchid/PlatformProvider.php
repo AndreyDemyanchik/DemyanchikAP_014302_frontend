@@ -39,29 +39,15 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.chooseCategoriesAndParamsForHandling')
                 ->permission('platform.chooseCategoriesAndParamsForHandling'),
 
-            /*Menu::make('Выбор стат. данных для визуализации')
-                ->icon('folder-alt')
-                ->route('platform.chooseStatVisualization')
-                ->permission('platform.chooseStatVisualization'),*/
-
             Menu::make('Запуск визуализации')
                 ->icon('control-forward')
-                ->route('platform.startHandlingStatData')
+                ->url('http://kicksharing-management-system/admin/statData/visualization/start')
                 ->permission('platform.startHandlingStatData'),
-
-            /*Menu::make('Скачать изображение визуализации')
-                ->icon('cloud-download')
-                ->route('platform.formImgVisualization')
-                ->permission('platform.formImgVisualization'),*/
 
             Menu::make('Генерация отчёта')
                 ->icon('browser')
                 ->route('platform.generateReport')
                 ->permission('platform.generateReport'),
-
-            /*Menu::make('Chart tools')
-                ->icon('bar-chart')
-                ->route('platform.example.charts'),*/
 
             Menu::make(__('Пользователи'))
                 ->icon('user')
