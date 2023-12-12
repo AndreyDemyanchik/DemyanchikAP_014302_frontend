@@ -42,6 +42,22 @@ class Ride extends AggregatorsFactory
             ];
         }
 
+        if (in_array('distanceDynamicByTime', array_keys($this->entity->fields))) {
+            $this->result['distanceDynamicByTime'] = [
+                'chartType' => 'chartLineExample',
+                'chartName' => 'Дистанция поездок относительно времени',
+                'data' => $this->countDistanceDynamicByTime()
+            ];
+        }
+
+        if (in_array('avgSpeedDynamicByTime', array_keys($this->entity->fields))) {
+            $this->result['avgSpeedDynamicByTime'] = [
+                'chartType' => 'chartLineExample',
+                'chartName' => 'Средняя скорость поездок относительно времени',
+                'data' => $this->countAvgSpeedDynamicByTime()
+            ];
+        }
+
         return $this->result;
     }
 
@@ -85,15 +101,47 @@ class Ride extends AggregatorsFactory
             $sumsResult[] = $totalPrice;
         }
 
-
         return [
             'values' => $sumsResult,
             'labels' => TimePeriodsDivider::divideByMonths($ridesDates)
         ];
     }
 
-    private function countAvgDistance()
+    /**
+     * @return string
+     */
+    private function countAvgDistance(): string
     {
         return \App\Models\Ride::average('distance') . ' км.';
+    }
+
+    /**
+     * @return array
+     */
+    private function countDistanceDynamicByTime(): array
+    {
+        $rides = \App\Models\Ride::selectRaw("distance, DATE_FORMAT(created_at, '%Y-%m-%d') as created_date")
+            ->whereYear('created_at', date('Y'))
+            ->get();
+
+        return [
+            'labels' => $rides->pluck('created_date'),
+            'values' => $rides->pluck('distance')
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function countAvgSpeedDynamicByTime(): array
+    {
+        $rides = \App\Models\Ride::selectRaw("avg_speed, DATE_FORMAT(created_at, '%Y-%m-%d') as created_date")
+            ->whereYear('created_at', date('Y'))
+            ->get();
+
+        return [
+            'labels' => $rides->pluck('created_date'),
+            'values' => $rides->pluck('avg_speed')
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\VisualizationAggregators;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Malfunction extends AggregatorsFactory
@@ -37,6 +38,22 @@ class Malfunction extends AggregatorsFactory
                 'chartType' => 'chartPieExample',
                 'chartName' => 'Ранжирование по серьёзностям поломки',
                 'data' => $this->rangeBySeverity()
+            ];
+        }
+
+        if (in_array('avgRepairingTimeByMakers', array_keys($this->entity->fields))) {
+            $this->result['avgRepairingTimeByMakers'] = [
+                'chartType' => 'chartBarExample',
+                'chartName' => 'Среднее время починки по производителям (в часах)',
+                'data' => $this->countAvgRepairingTimeByMakers()
+            ];
+        }
+
+        if (in_array('malfunctionsChanging', array_keys($this->entity->fields))) {
+            $this->result['malfunctionsChanging'] = [
+                'chartType' => 'chartLineExample',
+                'chartName' => 'Динамика неисправностей по времени',
+                'data' => $this->countMalfunctionsChanging()
             ];
         }
 
@@ -93,6 +110,41 @@ class Malfunction extends AggregatorsFactory
                     'HIGH' => 'Критическая'
                 };
             }, $malfunctionCounts->pluck('severity')->toArray())
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function countAvgRepairingTimeByMakers(): array
+    {
+        $averageRepairTime = \App\Models\Scooter::select(
+            'scooters.maker as maker',
+            DB::raw('AVG(TIMESTAMPDIFF(HOUR, scooter_malfunction.reported_at, scooter_malfunction.repaired_at))
+            as average_repair_time_in_hours')
+        )
+            ->join('scooter_malfunction', 'scooters.id', '=', 'scooter_malfunction.scooter_id')
+            ->groupBy('scooters.maker')
+            ->limit(15)
+            ->get();
+
+        return [
+            'labels' => $averageRepairTime->pluck('maker'),
+            'values' => $averageRepairTime->pluck('average_repair_time_in_hours')
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function countMalfunctionsChanging(): array
+    {
+        $malfunctions = \App\Models\ScooterMalfunction::select('*')
+            ->pluck('reported_at')->groupBy(fn ($date) => Carbon::parse($date)->format('Y-m'));
+
+        return [
+            'values' => range(1, count($malfunctions)),
+            'labels' => TimePeriodsDivider::divideByMonths($malfunctions)
         ];
     }
 }

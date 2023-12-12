@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\VisualizationAggregators;
 
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\DB;
 
 class Client extends AggregatorsFactory
 {
@@ -40,6 +40,22 @@ class Client extends AggregatorsFactory
                 'chartType' => 'chartLineExample',
                 'chartName' => 'Изменение количества клиентов во времени',
                 'data' => $this->countAbsoluteChangingClientsQuantityByTime()
+            ];
+        }
+
+        if (in_array('clientsDynamicsByMonth', array_keys($this->entity->fields))) {
+            $this->result['clientsDynamicsByMonth'] = [
+                'chartType' => 'chartBarExample',
+                'chartName' => 'Динамика клиентов по месяцам',
+                'data' => $this->detectClientsDynamicByMonth()
+            ];
+        }
+
+        if (in_array('strongClientsDynamicsByMonth', array_keys($this->entity->fields))) {
+            $this->result['strongClientsDynamicsByMonth'] = [
+                'chartType' => 'chartLineExample',
+                'chartName' => 'Динамика поездок постоянных клиентов по месяцам',
+                'data' => $this->detectStrongClientsDynamicByMonth()
             ];
         }
 
@@ -90,6 +106,47 @@ class Client extends AggregatorsFactory
         return [
             'values' => range(1, count($subscribers)),
             'labels' => TimePeriodsDivider::divideByMonths($subscribers)
+        ];
+    }
+
+    /**
+     * @return array[]
+     */
+    private function detectClientsDynamicByMonth(): array
+    {
+        $clientCounts = \App\Models\Client::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->get();
+
+        $labels = [];
+        $values = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $labels[] = MonthsDetector::getMonthNameByNumber($i);
+            $values[] = $clientCounts->where('month', $i)->first()->count ?? 0;
+        }
+
+        return ['labels' => $labels, 'values' => $values];
+    }
+
+    /**
+     * @return array
+     */
+    private function detectStrongClientsDynamicByMonth(): array
+    {
+        $topClients = \App\Models\Client::select('clients.first_name', 'clients.last_name', 'clients.created_at',
+            DB::raw('count(*) as ride_count'))
+            ->join('rides', 'clients.id', '=', 'rides.client_id')
+            ->groupBy('clients.id', 'clients.first_name', 'clients.last_name', 'clients.created_at')
+            ->orderByDesc('ride_count')
+            ->limit(10)
+            ->get();
+
+        $dates = \App\Models\Client::select('created_at')->get();
+
+        return [
+            'labels' => $dates->pluck('created_at'),
+            'values' => range(1, $topClients->sum('ride_count'))
         ];
     }
 }
