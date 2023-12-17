@@ -10,6 +10,7 @@ use App\Services\VisualizationAggregators\AggregatorsFactory;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\View;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Screen;
@@ -62,11 +63,17 @@ class GenerateReportScreen extends Screen
                     Quill::make('comments')
                         ->title('Комментарии к отчёту'),
 
-                    Button::make('Сохранить')
+                    Button::make('Сохранить графическую информацию')
                         ->method('generate')
                         ->type(Color::DEFAULT())
+                        ->style('margin-bottom: 10px')
                         ->rawClick(),
-                ])
+
+                    Button::make('Сохранить отчёт')
+                        ->method('generateReport')
+                        ->type(Color::DEFAULT())
+                        ->rawClick(),
+                ]),
             ])
         ];
     }
@@ -83,8 +90,18 @@ class GenerateReportScreen extends Screen
             ->setNpmBinary('C:\\Users\\ADMIN\\AppData\\Roaming\\npm')
             ->setDelay(3000)
             ->setOption('newHeadless', true)
-            ->save('report.pdf');
+            ->save('diagrams.pdf');
 
-        return response()->download('report.pdf');
+        return response()->download('diagrams.pdf');
+    }
+
+    public function generateReport(Request $request)
+    {
+        $viewHtml = View::make('pdf', ['comments' => $request->get('comments')])->render();
+
+        $dompdf = new Dompdf(['defaultFont' => 'DejaVu Serif']);
+        $dompdf->loadHtml($viewHtml);
+        $dompdf->render();
+        $dompdf->stream();
     }
 }
