@@ -142,10 +142,15 @@ class Client extends AggregatorsFactory
             ->limit(10)
             ->get();
 
-        $dates = \App\Models\Client::select('created_at')->get();
+        $dates = \App\Models\Client::select('created_at')->orderBy('created_at')->get();
+
+        $labels = [];
+        foreach ($dates as $date) {
+            $labels[] = $date->created_at->format('Y-m-d');
+        }
 
         return [
-            'labels' => $dates->pluck('created_at'),
+            'labels' => $labels,
             'values' => range(1, $topClients->sum('ride_count'))
         ];
     }
