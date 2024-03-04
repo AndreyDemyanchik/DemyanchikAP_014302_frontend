@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\VisualizationController;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,4 @@ Route::get('statData/visualization/start', [
     'controller' => 'App\Orchid\Screens\StartHandlingStatDataScreen',
     'prefix' => '/admin/'
 ])->name('platform.startHandlingStatData');
+Route::get('test', [\App\Http\Controllers\ClientController::class, 'test']);

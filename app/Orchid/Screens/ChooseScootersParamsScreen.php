@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Http\Controllers\ScooterController;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\CheckBox;
@@ -94,6 +95,10 @@ class ChooseScootersParamsScreen extends Screen
 
     public function submit(Request $request)
     {
-        (new ScooterController())->create($request->except(['_token']));
+        $client = new Client();
+
+        $client->post('http://kicksharing-management-system-backend/api/visualization/scooters', [
+            'json' => $request->except(['_token'])
+        ]);
     }
 }

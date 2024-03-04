@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visualization;
+use GuzzleHttp\Client;
 
 class ClientController extends Controller
 {
-    public function create(array $parameters)
+    /*public function create(array $parameters)
     {
-        Visualization::first()->update([
-            'entity_title' => 'clients',
-            'fields' => json_encode(array_filter($parameters), JSON_UNESCAPED_UNICODE)
+        $client = new Client();
+
+        $response = $client->post('http://kicksharing-management-system-backend/client/create', [
+            'test' => 'test value'
         ]);
-    }
+    }*/
 }

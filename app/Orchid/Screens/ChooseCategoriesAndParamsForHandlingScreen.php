@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Models\Category;
+use GuzzleHttp\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,6 +15,7 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Layout;
+use Orchid\Screen\Repository;
 
 class ChooseCategoriesAndParamsForHandlingScreen extends Screen
 {
@@ -34,8 +36,21 @@ class ChooseCategoriesAndParamsForHandlingScreen extends Screen
      */
     public function query(): iterable
     {
+        $categories = [];
+        $client = new Client();
+
+        $response = $client->get('http://kicksharing-management-system-backend/api/categories');
+        $categoriesResponse = json_decode($response->getBody(), true);
+
+        foreach ($categoriesResponse as $categoryResponse) {
+            $categories[] = new Repository([
+                'id' => $categoryResponse['id'],
+                'title' => $categoryResponse['title']
+            ]);
+        }
+
         return [
-            'categories' => Category::all()
+            'categories' => $categories
         ];
     }
 
@@ -69,19 +84,16 @@ class ChooseCategoriesAndParamsForHandlingScreen extends Screen
         return [
             Layout::table('categories', [
                 TD::make('title', 'Название')
-                    ->width('400')
-                    ->render(function (Category $category) {
-                        return Str::limit($category->title);
-                    }),
+                    ->width('400'),
 
                 TD::make('', '')
-                    ->render(function (Category $category) {
+                    ->render(function (Repository $item) {
                         return Group::make([
                             Button::make('Выбрать параметры')
                                 ->method('chooseCategory')
                                 ->type(Color::PRIMARY())
                                 ->parameters([
-                                    'id' => $category->id
+                                    'id' => $item['id']
                                 ]),
                         ])->autoWidth();
                     })

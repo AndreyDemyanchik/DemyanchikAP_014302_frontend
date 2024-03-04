@@ -6,7 +6,9 @@ namespace App\Orchid\Screens\User;
 
 use App\Orchid\Layouts\User\ProfilePasswordLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Orchid\Access\Impersonation;
@@ -108,6 +110,12 @@ class UserProfileScreen extends Screen
             ],
         ]);
 
+        $client = new Client();
+
+        $client->post('http://kicksharing-management-system-backend/api/user/update', [
+            'json' => array_merge(['user_id' => Auth::id()], $request->get('user'))
+        ]);
+
         $request->user()
             ->fill($request->get('user'))
             ->save();
@@ -123,9 +131,14 @@ class UserProfileScreen extends Screen
             'password'     => 'required|confirmed|different:old_password',
         ]);
 
-        tap($request->user(), function ($user) use ($request) {
-            $user->password = Hash::make($request->get('password'));
-        })->save();
+        $client = new Client();
+
+        $client->post('http://kicksharing-management-system-backend/api/user/password', [
+            'json' => [
+                'user_id' => Auth::id(),
+                'password' => $request->get('password')
+            ]
+        ]);
 
         Toast::info(__('Password changed.'));
     }

@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Http\Controllers\ClientController;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\CheckBox;
@@ -83,6 +84,10 @@ class ChooseClientsParamsScreen extends Screen
 
     public function submit(Request $request)
     {
-        (new ClientController())->create($request->except(['_token']));
+        $client = new Client();
+
+        $client->post('http://kicksharing-management-system-backend/api/visualization/clients', [
+            'json' => $request->except(['_token'])
+        ]);
     }
 }

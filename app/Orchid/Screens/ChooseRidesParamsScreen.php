@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Http\Controllers\RideController;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\CheckBox;
@@ -82,6 +83,10 @@ class ChooseRidesParamsScreen extends Screen
 
     public function submit(Request $request)
     {
-        (new RideController())->create($request->except(['_token']));
+        $client = new Client();
+
+        $client->post('http://kicksharing-management-system-backend/api/visualization/rides', [
+            'json' => $request->except(['_token'])
+        ]);
     }
 }

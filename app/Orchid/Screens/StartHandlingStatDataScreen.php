@@ -8,6 +8,8 @@ use App\Orchid\Layouts\Examples\ChartPercentageExample;
 use App\Orchid\Layouts\Examples\ChartPieExample;
 use App\Services\VisualizationAggregators\AggregatorsFactory;
 use DateTime;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Screen;
@@ -30,15 +32,18 @@ class StartHandlingStatDataScreen extends Screen
      * Fetch data to be displayed on the screen.
      *
      * @return array
+     * @throws GuzzleException
      */
     public function query(): iterable
     {
-        $aggregatedData = (new AggregatorsFactory)->process();
-        //dd($aggregatedData);
+        $client = new Client();
+        $response = $client->get('http://kicksharing-management-system-backend/api/aggregated-data');
+
+        $aggregatedData = json_decode($response->getBody(), true);
+
         $this->makeChartsLayout($aggregatedData);
         $this->makeQueryForCharts($aggregatedData);
 
-        //dd($aggregatedData);
         return $this->chartsQuery;
     }
 
